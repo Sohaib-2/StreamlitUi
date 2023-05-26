@@ -17,37 +17,39 @@ c.execute('''
 
 
 def main():
-    st.title("Login/SignUp")
+    st.title("Login/Signup")
 
     menu = st.sidebar.selectbox("Login/Signup", ("Login", "Signup"))
 
     if menu == "Signup":
-        with st.form("login_form"):
+        with st.form("signup_form"):
             st.subheader("SignUp")
-            username = st.text_input('UserName')
+            username = st.text_input('Username')
             email = st.text_input("Email")
             password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button("SignUp")
+            submitted = st.form_submit_button("Sign Up")
 
         if submitted:
-            if signup(username, email, password, c=c, conn=conn):
+            result = signup(username, email, password, c=c, conn=conn)
+            if result == "Signup successful":
                 st.success("Signup successful. Please login.")
             else:
-                st.error("Username already exists.")
+                st.error(result)
 
     elif menu == "Login":
         with st.form("login_form"):
             st.subheader("Login")
-            username = st.text_input('UserName')
-            password = st.text_input('Enter Your Password', type="password")
+            username = st.text_input('Username')
+            password = st.text_input('Password', type="password")
             submitted = st.form_submit_button("Login")
 
         if submitted:
-            if login(username, password, c):
+            result = login(username, password, c)
+            if result == "Login successful":
                 st.success("Login successful!")
                 st.session_state['username'] = username
             else:
-                st.error("Invalid username or password.")
+                st.error(result)
 
 
 if __name__ == '__main__':

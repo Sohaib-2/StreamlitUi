@@ -3,7 +3,16 @@ from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationEntityMemory
 from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 from langchain.chat_models import ChatOpenAI
-st.header("ChatBot")
+
+col1, col2 = st.columns([7.5, 1])
+
+with col1:
+    st.header("ChatBot")
+with col2:
+    if st.button("Logout"):
+        del st.session_state['username']
+        st.experimental_rerun()
+
 if 'username' in st.session_state:
     st.subheader(f"Welcome, {st.session_state['username']}!")
     if "generated" not in st.session_state:
@@ -55,10 +64,9 @@ if 'username' in st.session_state:
         st.sidebar.warning('API key required to try this app. The API key is not stored in any form.')
 
     st.sidebar.button("New Chat", on_click=new_chat, type='primary')
-
     user_input = get_text()
 
-    if user_input:
+    if st.button("Submit"):
         try:
             output = Conversation.run(input=user_input)
             st.session_state.past.append(user_input)
@@ -88,10 +96,5 @@ if 'username' in st.session_state:
             del st.session_state.stored_session
             st.experimental_rerun()
 
-    if st.button("Logout"):
-        del st.session_state['username']
-        st.experimental_rerun()
-
 else:
     st.warning("Login to continue")
-
