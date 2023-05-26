@@ -4,17 +4,16 @@ from langchain.chains.conversation.memory import ConversationEntityMemory
 from langchain.chains.conversation.prompt import ENTITY_MEMORY_CONVERSATION_TEMPLATE
 from langchain.chat_models import ChatOpenAI
 
-col1, col2 = st.columns([7.5, 1])
-
-with col1:
-    st.header("ChatBot")
-with col2:
-    if st.button("Logout"):
-        del st.session_state['username']
-        st.experimental_rerun()
+st.header("ChatBot")
 
 if 'username' in st.session_state:
-    st.subheader(f"Welcome, {st.session_state['username']}!")
+    col1, col2 = st.columns([7.5, 1])
+    with col1:
+        st.subheader(f"Welcome, {st.session_state['username']}!")
+    with col2:
+        if st.button("Logout"):
+            del st.session_state['username']
+            st.experimental_rerun()
     if "generated" not in st.session_state:
         st.session_state["generated"] = []
     if "past" not in st.session_state:
